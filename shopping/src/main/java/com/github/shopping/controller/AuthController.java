@@ -1,5 +1,8 @@
 package com.github.shopping.controller;
 
+import com.github.shopping.exceptions.CAuthenticationEntryPointException;
+import com.github.shopping.exceptions.InvalidValueException;
+import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.model.User;
 import com.github.shopping.security.TokenBlacklist;
 import com.github.shopping.service.UserService;
@@ -23,20 +26,26 @@ public class AuthController {
     // 회원가입 요청 처리 메서드
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        userService.register(user); // UserService 통해 사용자 등록
-        return ResponseEntity.status(HttpStatus.CREATED) // HTTP 상태 코드 201(CREATED) 반환
-                .body("회원가입 성공");
+        try {
+            userService.register(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
+        } catch (InvalidValueException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 
     // 로그인 요청 처리 메서드
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String token = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        if (token != null) {
-            return ResponseEntity.ok(token); // 로그인 성공 시 JWT 토큰 반환
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) // 로그인 실패 시
-                    .body("로그인 실패");
+        try {
+            String token = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            if (token != null) {
+                return ResponseEntity.ok(token);
+            } else {
+                throw new CAuthenticationEntryPointException("잘못된 인증 정보입니다.");
+            }
+        } catch (CAuthenticationEntryPointException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
 
@@ -63,7 +72,15 @@ public class AuthController {
     // 계정 삭제 요청 처리 메서드
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAccount(@RequestParam Long userId) {
-        userService.deleteAccount(userId); // UserService 통해 계정 삭제 처리
-        return ResponseEntity.ok("계정 삭제 성공");
+        try {
+            User user = userService.findByUserId(userId);
+            if (user == null) {
+                throw new NotFoundException("사용자를 찾을 수 없습니다.");
+            }
+            userService.deleteAccount(userId);
+            return ResponseEntity.ok("계정 삭제 성공");
+        } catch (NotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 }

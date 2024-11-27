@@ -9,4 +9,6 @@ public interface UserService {
     String login(String email, String password);  // 로그인
 
     void deleteAccount(Long userId);  // 회원 탈퇴
+
+    User findByUserId(Long userId);
 }
