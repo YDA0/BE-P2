@@ -1,5 +1,6 @@
 package com.github.shopping.service;
 
+import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.model.Roles;
 import com.github.shopping.model.User;
 import com.github.shopping.model.UserPrincipal;
@@ -28,11 +29,20 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    public boolean isValidPassword(String password) {
+        System.out.println("입력된 비밀번호: " + password);
+        // 비밀번호가 영문자와 숫자를 포함하고, 8자 이상 20자 이하인지 확인
+        return password != null && password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$");
+    }
+
     @Override
     @Transactional
     public void register(User user) {
 //        // 비밀번호 유효성 검증
-//        if (!isValidPassword(user.getPassword()))
+        if (!isValidPassword(user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 작성해야 합니다.");
+        }
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -78,5 +88,10 @@ public class UserServiceImpl implements UserService {
 
         // User 삭제
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User findByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
     }
 }
