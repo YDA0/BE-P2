@@ -6,19 +6,12 @@ spring:
   datasource:
     url: jdbc:mariadb://database-p2.cx00oo0eeajx.ap-northeast-2.rds.amazonaws.com:3306/shopping?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: org.mariadb.jdbc.Driver
-    hikari:
-      maximum-pool-size: 10  # 데이터베이스 연결 풀 크기 조정
-
   jpa:
     hibernate:
-      ddl-auto: update  # 프로덕션 환경에서는 적절한 ddl-auto 설정
-    show-sql: false  # 프로덕션에서는 SQL 쿼리 로그를 출력하지 않음
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MariaDB103Dialect  # MariaDB에 맞는 Dialect 설정
-        format_sql: false
-        use_sql_comments: false
-        jdbc.batch_size: 50  # 배치 크기 설정
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MariaDB103Dialect  # MariaDB 10.11에 맞는 Dialect 설정
+    show-sql: true
+    open-in-view: false
 
 logging:
   config: classpath:logback-spring-prod.xml  # 프로덕션용 로깅 설정
