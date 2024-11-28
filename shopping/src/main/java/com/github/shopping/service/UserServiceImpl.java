@@ -1,9 +1,9 @@
 package com.github.shopping.service;
 
 import com.github.shopping.exceptions.NotFoundException;
-import com.github.shopping.model.Roles;
-import com.github.shopping.model.User;
-import com.github.shopping.model.UserPrincipal;
+import com.github.shopping.entity.Roles;
+import com.github.shopping.entity.User;
+import com.github.shopping.entity.UserPrincipal;
 import com.github.shopping.repository.UserPrincipalRepository;
 import com.github.shopping.repository.UserRepository;
 import com.github.shopping.security.JwtTokenProvider;

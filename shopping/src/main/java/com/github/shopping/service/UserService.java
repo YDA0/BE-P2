@@ -1,6 +1,6 @@
 package com.github.shopping.service;
 
-import com.github.shopping.model.User;
+import com.github.shopping.entity.User;
 
 public interface UserService {
 

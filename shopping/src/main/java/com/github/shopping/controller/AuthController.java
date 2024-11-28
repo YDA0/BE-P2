@@ -1,9 +1,10 @@
 package com.github.shopping.controller;
 
+import com.github.shopping.dto.LoginRequest;
 import com.github.shopping.exceptions.CAuthenticationEntryPointException;
 import com.github.shopping.exceptions.InvalidValueException;
 import com.github.shopping.exceptions.NotFoundException;
-import com.github.shopping.model.User;
+import com.github.shopping.entity.User;
 import com.github.shopping.security.TokenBlacklist;
 import com.github.shopping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
