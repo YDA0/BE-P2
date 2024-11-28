@@ -1,4 +1,4 @@
-package com.github.shopping.model;
+package com.github.shopping.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

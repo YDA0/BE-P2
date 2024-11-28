@@ -1,4 +1,4 @@
-package com.github.shopping.controller;
+package com.github.shopping.dto;
 
 import lombok.Data;
 
