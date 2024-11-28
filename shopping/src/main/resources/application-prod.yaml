@@ -6,10 +6,8 @@ spring:
   datasource:
     url: jdbc:mariadb://database-p2.cx00oo0eeajx.ap-northeast-2.rds.amazonaws.com:3306/shopping?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: org.mariadb.jdbc.Driver
+
   jpa:
-    hibernate:
-      ddl-auto: update
-      dialect: org.hibernate.dialect.MariaDB103Dialect  # MariaDB 10.11에 맞는 Dialect 설정
     show-sql: true
     open-in-view: false
 
