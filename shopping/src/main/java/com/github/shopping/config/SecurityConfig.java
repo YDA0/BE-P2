@@ -32,7 +32,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/register", "/api/auth/login", "/swagger-ui/**", "/v3/api-docs/**","/swagger-ui/index.html").permitAll()
+                                .requestMatchers(
+                                        "/api/auth/register",
+                                        "/api/auth/login",
+                                        "/api/products",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/index.html"
+                                ).permitAll()
                                 .anyRequest().authenticated() // 나머지 모든 요청은 인증된 사용자만 접근 가능
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
