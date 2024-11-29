@@ -15,3 +15,9 @@ spring:
 
 logging:
   config: classpath:logback-spring-prod.xml  # 프로덕션용 로깅 설정
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs  # API 문서 경로
+  swagger-ui:
+    path: /swagger-ui/index.html
