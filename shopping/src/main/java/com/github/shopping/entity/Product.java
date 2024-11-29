@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -52,10 +53,8 @@ public class Product {
     @Column(nullable = false)
     private Boolean isDelete = false;
 
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductImage> productImages;
-
+    @Column(name = "product_image_url")
+    private String productImageUrl;
 
 }
 
