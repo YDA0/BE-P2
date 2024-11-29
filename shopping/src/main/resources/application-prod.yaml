@@ -13,11 +13,19 @@ spring:
     show-sql: true
     open-in-view: false
 
-logging:
-  config: classpath:logback-spring-prod.xml  # 프로덕션용 로깅 설정
+  security:
+    basic:
+      enabled: false
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs  # API 문서 경로
-  swagger-ui:
-    path: /swagger-ui/index.html
+  springdoc:
+    api-docs:
+      path: /v3/api-docs
+    swagger-ui:
+      path: /swagger-ui/index.html
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
+
+logging:
+  config: classpath:logback-spring-prod.xml
