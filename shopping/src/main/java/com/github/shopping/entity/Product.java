@@ -33,28 +33,21 @@ public class Product {
     @Column(name = "contents", columnDefinition = "TEXT")  // 상품 설명 컬럼 (TEXT 타입)
     private String contents;
 
-    @Column(name = "product_status", nullable = false, length = 1)  // 상품 상태 (CHAR(1))
-    private String productStatus;
-
-    @Column(name = "product_create_at", nullable = false, updatable = false) // 상품 등록일 (자동 설정)
-    @CreationTimestamp // 상품 등록 시 자동으로 시간 설정
-    private LocalDateTime productCreateAt;
 
     @Column(name = "product_update_at") // 상품 수정일 (자동 갱신)
     @UpdateTimestamp // 상품 수정 시 자동으로 시간 갱신
     private LocalDateTime productUpdateAt;
 
-    @Column(name = "product_delete_at") // 상품 삭제일 (논리 삭제)
-    private LocalDateTime deleteAt;
 
     @Column(name = "product_stock")
     private Integer productStock;
 
-    @Column(nullable = false)
-    private Boolean isDelete = false;
 
     @Column(name = "product_image_url")
     private String productImageUrl;
+
+    @OneToMany(mappedBy = "product")
+    private List<Option> options;
 
 }
 

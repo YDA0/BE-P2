@@ -32,7 +32,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/register", "/api/auth/login","/api/products").permitAll() // 회원가입과 로그인 경로에 대해 허용
+                                .requestMatchers("/api/auth/register", "/api/auth/login","/api/products").permitAll()
+                                .requestMatchers("/api/products/{id}").permitAll()// 회원가입과 로그인 경로에 대해 허용
                                 .anyRequest().authenticated() // 나머지 모든 요청은 인증된 사용자만 접근 가능
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
