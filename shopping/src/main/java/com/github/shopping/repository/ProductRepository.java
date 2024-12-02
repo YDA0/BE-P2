@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Page<Product> findByProductStockGreaterThan(int productStock, Pageable pageable);
+    Page<Product> findByProductStockGreaterThan(Integer productStock, Pageable pageable);
 
 }
