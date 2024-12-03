@@ -10,5 +10,7 @@ public interface UserService {
 
     void deleteAccount(Long userId);  // 회원 탈퇴
 
-    User findByUserId(Long userId);
+    User findByUserId(Long userId); // 사용자 조회
+
+    void upgradeToSeller(Long userId);
 }

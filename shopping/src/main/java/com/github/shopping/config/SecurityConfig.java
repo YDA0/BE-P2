@@ -6,6 +6,7 @@ import com.github.shopping.security.JwtTokenProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,8 +31,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
+                .authorizeHttpRequests(authorize -> authorize
+                                // 공개 접근 가능 경로
                                 .requestMatchers(
                                         "/api/auth/register",
                                         "/api/auth/login",
@@ -40,7 +41,11 @@ public class SecurityConfig {
                                         "/v3/api-docs/**",
                                         "/swagger-ui/index.html"
                                 ).permitAll()
-                                .anyRequest().authenticated() // 나머지 모든 요청은 인증된 사용자만 접근 가능
+                                .requestMatchers(HttpMethod.GET, "/api/sell/**").authenticated() // 판매 상품 조회
+                                .requestMatchers(HttpMethod.POST, "/api/sell").authenticated() // 상품 등록
+                                .requestMatchers(HttpMethod.PUT, "/api/sell/**").authenticated() // 상품 수정
+                                .requestMatchers(HttpMethod.DELETE, "/api/sell/**").authenticated() // 상품 삭제
+                                .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -3,6 +3,7 @@ package com.github.shopping.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,6 +22,7 @@ public class ProductDto {
     private LocalDateTime productCreateAt;
     private LocalDateTime productUpdateAt;
     private String productImageUrl;
+    private List<SellDto> sells;
 
     @Override
     public boolean equals(Object o) {

@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Long productId;  // 권한 ID
+    private Long productId;  // 상품 ID
 
     @Column(name = "title", nullable = false, length = 255)
     private String title; // 상품명
@@ -56,5 +55,13 @@ public class Product {
     @Column(name = "product_image_url")
     private String productImageUrl;
 
+    // 사용자와의 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+
+    // 판매 목록과의 매핑
+    @OneToMany(mappedBy = "product")
+    private List<Sell> sells;
 }
 

@@ -21,4 +21,5 @@ public class Roles {
 
     @Column(nullable = false)
     private String roleName;  // 권한 이름 (예: 'ADMIN', 'USER')
+
 }

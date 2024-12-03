@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public boolean isValidPassword(String password) {
         System.out.println("입력된 비밀번호: " + password);
         // 비밀번호가 영문자와 숫자를 포함하고, 8자 이상 20자 이하인지 확인
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(User user) {
-//        // 비밀번호 유효성 검증
+        // 비밀번호 유효성 검증
         if (!isValidPassword(user.getPassword())) {
             throw new IllegalArgumentException("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 작성해야 합니다.");
         }
@@ -75,6 +74,18 @@ public class UserServiceImpl implements UserService {
 
         // JWT 토큰 생성
         return jwtTokenProvider.generateToken(user.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void upgradeToSeller(Long userId) {
+        // 사용자 역할 정보 조회
+        UserPrincipal userPrincipal = userPrincipalRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new NotFoundException("사용자의 역할 정보를 찾을 수 없습니다."));
+
+        // 역할 변경
+        userPrincipal.setRole(new Roles(3L, "SELLER")); // role_id 3: SELLER
+        userPrincipalRepository.save(userPrincipal);
     }
 
     @Override

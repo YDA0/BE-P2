@@ -6,7 +6,9 @@ import lombok.*;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,5 +46,9 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserPrincipal> userPrincipals = new ArrayList<>();  // UserPrincipal과의 관계 설정
+    private List<UserPrincipal> userPrincipals = new ArrayList<>();  // 사용자 역할 정보 관리
+
+    public User(Long userId) {
+        this.userId = userId;
+    }
 }
