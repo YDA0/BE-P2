@@ -14,6 +14,7 @@ public class SellDto {
     private Integer sellStock;
     private Double sellPrice;
     private String sellImage;
+    private String sellContents;
     private LocalDateTime sellCreateAt;
     private LocalDateTime sellUpdateAt;
 }

@@ -21,15 +21,14 @@ public class SellServiceImpl implements SellService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    // 판매 등록
+    // 상품 등록
     @Override
     @Transactional
     public SellDto registerSell(Long userId, Product product, SellDto sellDto) {
         // 사용자 찾기
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // 상품 등록
         product.setUserId(user); // 상품 등록한 사용자 설정
         Product savedProduct = productRepository.save(product); // 상품 저장
 
@@ -41,6 +40,7 @@ public class SellServiceImpl implements SellService {
                 .sellStock(sellDto.getSellStock())
                 .sellPrice(sellDto.getSellPrice())
                 .sellImage(sellDto.getSellImage())
+                .sellContents(sellDto.getSellContents())
                 .build();
 
         // 판매 정보 저장
@@ -49,7 +49,27 @@ public class SellServiceImpl implements SellService {
         return convertToResponseDto(savedSell);
     }
 
-    // 판매 상품 전체 조회
+    // 상품 수정
+    public SellDto updateSell(Long userId, Long sellId, SellDto sellDto) {
+        Sell sell = sellRepository.findById(sellId)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+        // 판매자가 아닐 경우 예외 처리
+        if (!sell.getUserId().getUserId().equals(userId)) {
+            throw new RuntimeException("상품을 등록한 판매자만 수정 가능합니다.");
+        }
+
+        // 수정할 값 업데이트
+        sell.setSellName(sellDto.getSellName());
+        sell.setSellPrice(sellDto.getSellPrice());
+        sell.setSellStock(sellDto.getSellStock());
+        sell.setSellImage(sellDto.getSellImage());
+        sell.setSellContents(sellDto.getSellContents());
+        sellRepository.save(sell);
+
+        return convertToResponseDto(sell);
+    }
+
+    // TODO: 판매자 상품 전체 조회
     @Override
     public List<SellDto> getAllSells() {
         return sellRepository.findAll().stream()
@@ -66,6 +86,7 @@ public class SellServiceImpl implements SellService {
         dto.setSellStock(sell.getSellStock());
         dto.setSellPrice(sell.getSellPrice());
         dto.setSellImage(sell.getSellImage());
+        dto.setSellContents(sell.getSellContents());
         dto.setSellCreateAt(sell.getSellCreateAt());
         dto.setSellUpdateAt(sell.getSellUpdateAt() != null ? sell.getSellUpdateAt() : null);
         return dto;

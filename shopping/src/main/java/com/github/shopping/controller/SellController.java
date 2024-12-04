@@ -42,6 +42,15 @@ public class SellController {
         return ResponseEntity.ok(registeredSell);
     }
 
+    // 상품 수정
+    @PutMapping("/{sellId}")
+    public ResponseEntity<SellDto> updateSell(@PathVariable Long sellId, @RequestBody SellDto sellDto, Principal principal) {
+        Long userId = getUserIdFromPrincipal(principal);
+        SellDto updatedSell = sellService.updateSell(userId, sellId, sellDto);
+        return ResponseEntity.ok(updatedSell);
+    }
+
+    // TODO: 판매자 상품 전체 조회
     @GetMapping
     public ResponseEntity<List<SellDto>> getAllSells() {
         List<SellDto> sellDtos = sellService.getAllSells();
