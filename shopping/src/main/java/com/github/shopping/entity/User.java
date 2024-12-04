@@ -45,4 +45,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserPrincipal> userPrincipals = new ArrayList<>();  // UserPrincipal과의 관계 설정
+
+    @Column(name = "profile_img_url")
+    private String profileImgUrl; // 유저 프로필 사진 추가
 }
