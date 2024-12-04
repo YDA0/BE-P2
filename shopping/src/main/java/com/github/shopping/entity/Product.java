@@ -46,7 +46,7 @@ public class Product {
     @Column(name = "product_image_url")
     private String productImageUrl;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     private List<Option> options;
 
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 public class TokenBlacklist {
     // 동기화된 HashSet 사용하여 블랙리스트 관리
     private final Set<String> blacklistedTokens = Collections.synchronizedSet(new HashSet<>()) ;
-
+    
     // 토큰을 블랙리스트에 추가
     public void blacklistToken(String token) {
         blacklistedTokens.add(token);
