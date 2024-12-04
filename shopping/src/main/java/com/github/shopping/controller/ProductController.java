@@ -1,20 +1,23 @@
 package com.github.shopping.controller;
 
+import com.github.shopping.dto.ProductDetailDto;
 import com.github.shopping.entity.Product;
+import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.Link;
+import org.springframework.web.bind.annotation.*;
 import com.github.shopping.dto.ProductDto;
 import com.github.shopping.service.ProductService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -41,4 +44,16 @@ public class ProductController {
         return pagedResourcesAssembler.toModel(productDtoPage); // HATEOAS 형식으로 반환
     }
 
+    @GetMapping("/products/{id}")
+    public EntityModel<ProductDetailDto> getProductDetail(@PathVariable Long id) {
+        ProductDetailDto productDetailDto = productService.getProductDetailById(id)
+                .orElseThrow(() -> new NotFoundException("이 제품의 상품 정보를 찾을 수 없습니다." + id));
+
+        // HATEOAS 링크 추가
+        return EntityModel.of(
+                productDetailDto,
+                Link.of("/products/" + id).withSelfRel(), // 현재 리소스 링크
+                Link.of("/products").withRel("all-products") // 전체 상품 목록 보기 링크
+        );
+    }
 }

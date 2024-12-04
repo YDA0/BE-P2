@@ -1,9 +1,12 @@
 package com.github.shopping.service;
 
+
+import com.github.shopping.entity.Product;
 import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.entity.Roles;
 import com.github.shopping.entity.User;
 import com.github.shopping.entity.UserPrincipal;
+import com.github.shopping.repository.ProductRepository;
 import com.github.shopping.repository.UserPrincipalRepository;
 import com.github.shopping.repository.UserRepository;
 import com.github.shopping.security.JwtTokenProvider;
@@ -11,7 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,15 +25,15 @@ public class UserServiceImpl implements UserService {
     private final UserPrincipalRepository userPrincipalRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ProductRepository productRepository;
 
-    public UserServiceImpl(UserRepository userRepository, UserPrincipalRepository userPrincipalRepository,
-                           JwtTokenProvider jwtTokenProvider, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserPrincipalRepository userPrincipalRepository, JwtTokenProvider jwtTokenProvider, BCryptPasswordEncoder passwordEncoder, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.userPrincipalRepository = userPrincipalRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
+        this.productRepository = productRepository;
     }
-
 
     public boolean isValidPassword(String password) {
         System.out.println("입력된 비밀번호: " + password);
