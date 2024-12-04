@@ -9,8 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductDetailDto {
     private Long productId;
     private String title;
@@ -20,4 +18,5 @@ public class ProductDetailDto {
     private String productImageUrl;
     private List<OptionDto> colorOptions;
     private List<OptionDto> sizeOptions;
+
 }

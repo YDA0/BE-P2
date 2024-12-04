@@ -5,12 +5,14 @@ import com.github.shopping.dto.ProductDetailDto;
 import com.github.shopping.dto.ProductDto;
 import com.github.shopping.entity.Product;
 import com.github.shopping.exceptions.NotFoundException;
+import com.github.shopping.mapper.ProductMapper;
+import com.github.shopping.repository.OptionRepository;
 import com.github.shopping.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
 
 
     private final ProductRepository productRepository;
+    private final OptionRepository optionRepository;
+    private final ProductMapper productMapper;
 
 
     @Override
@@ -36,31 +40,20 @@ public class ProductServiceImpl implements ProductService {
 
     public Optional<ProductDetailDto> getProductDetailById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("이 제품의 상품 정보를 찾을 수 없습니다." + id));
+                .orElseThrow(() -> new NotFoundException("이 제품의 상품 정보를 찾을 수 없습니다."));
 
-        ProductDetailDto dto = new ProductDetailDto();
-        dto.setProductId(product.getProductId());
-        dto.setTitle(product.getTitle());
-        dto.setPrice(product.getPrice());
-        dto.setContents(product.getContents());
-        dto.setProductStock(product.getProductStock());
-        dto.setProductImageUrl(product.getProductImageUrl());
+        ProductDetailDto productDetailDto = productMapper.toProductDetailDto(product);
 
-        // 색상 옵션 (예시)
-        List<OptionDto> colorOptions = new ArrayList<>();
-        colorOptions.add(new OptionDto("색상", "Red"));
-        colorOptions.add(new OptionDto("색상", "Blue"));
-        dto.setColorOptions(colorOptions);
+        // colorOptions, sizeOptions 세팅
+        List<OptionDto> colorOptions = productMapper.toColorOptions(product.getOptions());
+        List<OptionDto> sizeOptions = productMapper.toSizeOptions(product.getOptions());
 
-        // 사이즈 옵션 (예시)
-        List<OptionDto> sizeOptions = new ArrayList<>();
-        sizeOptions.add(new OptionDto("사이즈", "S"));
-        sizeOptions.add(new OptionDto("사이즈", "M"));
-        sizeOptions.add(new OptionDto("사이즈", "L"));
-        dto.setSizeOptions(sizeOptions);
+        productDetailDto.setColorOptions(colorOptions);
+        productDetailDto.setSizeOptions(sizeOptions);
 
-        return Optional.of(dto);
+        return Optional.of(productDetailDto);
     }
+
 
 
     private ProductDto convertToDto(Product product) {

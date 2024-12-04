@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.github.shopping.dto.ProductDto;
 import com.github.shopping.service.ProductService;
@@ -45,15 +46,18 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public EntityModel<ProductDetailDto> getProductDetail(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<ProductDetailDto>> getProductDetail(@PathVariable Long id) {
         ProductDetailDto productDetailDto = productService.getProductDetailById(id)
-                .orElseThrow(() -> new NotFoundException("이 제품의 상품 정보를 찾을 수 없습니다." + id));
+                .orElseThrow(() -> new NotFoundException("이 제품의 상품 정보를 찾을 수 없습니다."));
 
         // HATEOAS 링크 추가
-        return EntityModel.of(
+        EntityModel<ProductDetailDto> resource = EntityModel.of(
                 productDetailDto,
-                Link.of("/products/" + id).withSelfRel(), // 현재 리소스 링크
-                Link.of("/products").withRel("all-products") // 전체 상품 목록 보기 링크
+                Link.of("/api/products/" + id).withSelfRel(),  // 현재 리소스 링크
+                Link.of("/api/products").withRel("all-products")  // 전체 상품 목록 보기 링크
         );
+
+        return ResponseEntity.ok(resource);  // 200 OK 상태 코드로 반환
     }
+
 }

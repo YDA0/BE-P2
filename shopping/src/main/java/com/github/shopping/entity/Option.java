@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "options")
 public class Option {
     @Id
