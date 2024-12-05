@@ -33,6 +33,9 @@ public class Sell {
     @Column(name = "sell_image", nullable = false)
     private String sellImage;
 
+    @Column(name = "sell_contents", nullable = false)
+    private String sellContents;
+
     @Column(name = "sell_create_at")
     private LocalDateTime sellCreateAt;
 
