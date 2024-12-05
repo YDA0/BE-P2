@@ -28,7 +28,12 @@ public class SellController {
         Long userId = getUserIdFromPrincipal(principal);
 
         // 실제 사용자 조회
-        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+        // 판매 종료일자 검증
+        if (sellDto.getSellEndDate() == null) {
+            throw new RuntimeException("판매 종료일자는 필수 입력 항목입니다.");
+        }
 
         Product product = new Product();
         product.setTitle(sellDto.getSellName());
