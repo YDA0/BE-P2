@@ -1,18 +1,40 @@
 package com.github.shopping.service;
 
+import com.github.shopping.dto.CartItemDto;
 import com.github.shopping.dto.PaymentRequestDto;
+import com.github.shopping.entity.Payment;
+import com.github.shopping.entity.PaymentItem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.github.shopping.repository.PaymentRepository;
+import com.github.shopping.mapper.PaymentMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
-    public void processPayment(PaymentRequestDto paymentRequestDto) {
-        // 결제 정보 유효성 검증 로직
-        // 여기서는 외부 결제 API 호출 로직이나 간단한 검증만 넣을 수 있음.
-        if (paymentRequestDto.getCardNumber().length() != 16) {
-            throw new IllegalArgumentException("유효하지 않은 카드 번호입니다.");
-        }
 
-        // 여기서 실제 결제 로직을 호출할 수 있지만,
-        // 지금은 단순히 "결제가 성공적으로 완료되었습니다" 메시지만 반환
+    private final CartService cartService;
+    private final PaymentRepository paymentRepository;
+    private final PaymentMapper paymentMapper;// CartItemMapper 주입
+
+    public Payment processPayment(PaymentRequestDto paymentRequest) {
+        // 1. 장바구니 아이템 조회
+        List<CartItemDto> cartItems = cartService.getCartItems();
+
+        // 2. Payment 엔티티 생성 및 정보 설정
+        Payment payment = paymentMapper.toPayment(paymentRequest);
+
+        // 3. CartItemDto 리스트를 PaymentItem 리스트로 변환
+        List<PaymentItem> paymentItems = cartItems.stream()
+                .map(paymentMapper::toPaymentItem)  // CartItemDto -> PaymentItem 변환
+                .collect(Collectors.toList());
+
+        payment.setPaymentItems(paymentItems);
+
+        // 4. 결제 데이터 저장
+        return paymentRepository.save(payment);
     }
 }

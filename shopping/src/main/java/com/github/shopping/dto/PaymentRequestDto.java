@@ -27,6 +27,6 @@ public class PaymentRequestDto {
     private String address; // 배송 주소
 
     @NotBlank(message = "우편번호는 필수 입력 항목입니다.")
-    private String postalCode; // 우편번호
+    private String zipCode; // 우편번호
 
 }
