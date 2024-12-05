@@ -2,6 +2,7 @@ package com.github.shopping.service;
 
 
 import com.github.shopping.entity.Product;
+import com.github.shopping.exceptions.InvalidValueException;
 import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.entity.Roles;
 import com.github.shopping.entity.User;
@@ -44,9 +45,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(User user) {
-//        // 비밀번호 유효성 검증
+        // 이메일 중복 여부 확인
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new InvalidValueException("존재하는 이메일입니다.");
+        }
+
+        // 비밀번호 유효성 검증
         if (!isValidPassword(user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 작성해야 합니다.");
+            throw new InvalidValueException("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 작성해야 합니다.");
         }
 
         // 비밀번호 암호화
