@@ -29,6 +29,11 @@ public class SellServiceImpl implements SellService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
+        // 판매 종료일자 필수 확인
+        if (sellDto.getSellEndDate() == null) {
+            throw new RuntimeException("판매 종료일자는 필수 입력 항목입니다.");
+        }
+
         product.setUserId(user); // 상품 등록한 사용자 설정
         Product savedProduct = productRepository.save(product); // 상품 저장
 
@@ -37,10 +42,11 @@ public class SellServiceImpl implements SellService {
                 .userId(user)
                 .product(savedProduct)
                 .sellName(sellDto.getSellName())
-                .sellStock(sellDto.getSellStock())
                 .sellPrice(sellDto.getSellPrice())
+                .sellStock(sellDto.getSellStock())
                 .sellImage(sellDto.getSellImage())
                 .sellContents(sellDto.getSellContents())
+                .sellEndDate(sellDto.getSellEndDate())
                 .build();
 
         // 판매 정보 저장
@@ -89,6 +95,7 @@ public class SellServiceImpl implements SellService {
         dto.setSellContents(sell.getSellContents());
         dto.setSellCreateAt(sell.getSellCreateAt());
         dto.setSellUpdateAt(sell.getSellUpdateAt() != null ? sell.getSellUpdateAt() : null);
+        dto.setSellEndDate(sell.getSellEndDate());
         return dto;
     }
 }

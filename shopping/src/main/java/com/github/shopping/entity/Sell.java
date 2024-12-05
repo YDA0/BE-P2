@@ -3,6 +3,7 @@ package com.github.shopping.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -41,6 +42,9 @@ public class Sell {
 
     @Column(name = "sell_update_at")
     private LocalDateTime sellUpdateAt;
+
+    @Column(name = "sell_end_date", nullable = false)
+    private LocalDate sellEndDate;
 
     @PrePersist
     protected void onCreate() {
