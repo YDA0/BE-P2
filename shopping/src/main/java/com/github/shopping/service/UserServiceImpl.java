@@ -44,7 +44,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(User user) {
-//        // 비밀번호 유효성 검증
+        // 이메일 중복 여부 확인
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+        }
+        // 비밀번호 유효성 검증
         if (!isValidPassword(user.getPassword())) {
             throw new IllegalArgumentException("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 작성해야 합니다.");
         }
