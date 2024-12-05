@@ -53,9 +53,6 @@ public class Product {
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 
-//   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//   private List<Cart> cart;
-
     @OneToMany(mappedBy = "product")
     private List<Sell> sells;
 }
