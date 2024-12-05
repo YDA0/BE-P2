@@ -1,6 +1,7 @@
 package com.github.shopping.service;
 
 import com.github.shopping.dto.AddToCartRequestDto;
+import com.github.shopping.dto.CartItemDto;
 import com.github.shopping.entity.Cart;
 import com.github.shopping.mapper.CartMapper;
 import com.github.shopping.entity.Product;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -80,5 +83,17 @@ public class CartServiceImpl implements CartService {
 
         return cartRepository.save(cart);  // 변경된 장바구니 항목 반환
     }
+
+    @Override
+    public List<CartItemDto> getCartItems() {
+        // Cart 엔티티 리스트를 가져옴
+        List<Cart> cartList = cartRepository.findAll();
+
+        // 매퍼를 사용해 Cart 리스트를 CartItemDto 리스트로 변환
+        return cartList.stream()
+                .map(cartMapper::toCartItemDto) // MapStruct 매퍼 사용
+                .collect(Collectors.toList());
+    }
+
 }
 
