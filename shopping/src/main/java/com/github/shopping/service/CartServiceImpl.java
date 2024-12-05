@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,18 +29,37 @@ public class CartServiceImpl implements CartService {
 
     private final ProductService productService;
 
-    // 장바구니 항목 추가 메서드
+
+
+
+    @Override
     @Transactional
     public Cart addToCart(AddToCartRequestDto dto) {
-        // 상품 조회 및 재고 수량 확인
-        Product product = productService.checkAndUpdateProductStock(dto.getProductId(), dto.getQuantity());
+        Product product = productService.findById(dto.getProductId());
 
-        // AddToCartRequestDto -> Cart 변환
-        Cart cart = cartMapper.toCart(dto, product);
+        // 상품의 재고를 차감 (checkAndUpdateProductStock 메서드를 사용)
+        productService.checkAndUpdateProductStock(product.getProductId(), dto.getQuantity());
 
-        // 장바구니에 저장
-        return cartRepository.save(cart);  // Cart 객체 반환
+        // 장바구니에서 해당 상품이 있는지 확인
+        Optional<Cart> existingCart = cartRepository.findByProductAndColorOptionAndSizeOption(product, dto.getSelectedColor(), dto.getSelectedSize());
+
+        if (existingCart.isPresent()) {
+            // 상품이 이미 장바구니에 있는 경우, 수량만 업데이트
+            Cart cart = existingCart.get();
+            cart.setQuantity(cart.getQuantity() + dto.getQuantity());
+            cart.setCartPrice(cart.getCartPrice() + (dto.getPrice() * dto.getQuantity()));
+
+            // 장바구니 항목 업데이트
+            return cartRepository.save(cart);
+        } else {
+            // 상품이 없으면 새로 추가
+            Cart cart = cartMapper.toCart(dto, product);
+
+            // 장바구니에 새 항목 추가
+            return cartRepository.save(cart);
+        }
     }
+
 
     @Transactional
     public Cart updateQuantity(Long cartId, int changeAmount) {
