@@ -7,6 +7,7 @@ import com.github.shopping.entity.User;
 import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.repository.MyPageRepository;
 import com.github.shopping.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,11 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
 
     private final MyPageRepository myPageRepository;
     private final PaymentRepository paymentRepository;
-
-    public MyPageServiceImpl(MyPageRepository myPageRepository, PaymentRepository paymentRepository) {
-        this.myPageRepository = myPageRepository;
-        this.paymentRepository = paymentRepository;
-    }
 
     // 이메일로 내 정보 조회
     @Override
