@@ -17,6 +17,8 @@ public interface ProductService {
     int adjustQuantity(Long productId, int changeAmount);
 
     Product checkAndUpdateProductStock(Long productId, int quantity);
+
+    Product findById(Long productId);
 }
 
 
