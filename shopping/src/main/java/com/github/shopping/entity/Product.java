@@ -49,7 +49,7 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     private List<Option> options;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cart> cart;
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Cart> cart;
 }
 
