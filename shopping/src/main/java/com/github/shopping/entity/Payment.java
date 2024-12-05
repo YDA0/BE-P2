@@ -38,7 +38,10 @@ public class Payment {
 
     private String zipCode; // 우편번호
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_id")
     private List<PaymentItem> paymentItems = new ArrayList<>(); // 구매한 물품
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) private User user;
 }

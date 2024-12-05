@@ -6,6 +6,7 @@ import com.github.shopping.entity.User;
 import com.github.shopping.exceptions.NotFoundException;
 import com.github.shopping.repository.MyPageRepository;
 import com.github.shopping.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
 
     private final MyPageRepository myPageRepository;
 
-    public MyPageServiceImpl(MyPageRepository myPageRepository) {
-        this.myPageRepository = myPageRepository;
-    }
 
     // 이메일로 내 정보 조회
     @Override
