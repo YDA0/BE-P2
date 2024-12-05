@@ -32,18 +32,6 @@ public class Cart {
     @Column(name = "cart_price")
     private Integer cartPrice; // 가격 (상품 가격 * 수량)
 
-    // 기본 생성자, getter, setter는 Lombok을 사용하여 자동 생성됩니다.
-
-    // 장바구니 항목 가격을 계산하는 메서드
-    public void calculatePrice() {
-        if (product != null && product.getPrice() != null) {
-            this.cartPrice = product.getPrice() * quantity;
-        } else {
-            // price가 null일 경우 기본값 설정
-            this.cartPrice = 0;
-        }
-    }
-
 
     @Override
     public boolean equals(Object o) {
