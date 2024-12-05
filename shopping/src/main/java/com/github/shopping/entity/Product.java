@@ -49,5 +49,11 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     private List<Option> options;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+
+    @OneToMany(mappedBy = "product")
+    private List<Sell> sells;
 }
 

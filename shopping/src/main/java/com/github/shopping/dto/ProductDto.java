@@ -4,6 +4,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -20,7 +21,6 @@ public class ProductDto {
     private String contents;
     private LocalDateTime productUpdateAt;
     private String productImageUrl;
-
 
     @Override
     public boolean equals(Object o) {

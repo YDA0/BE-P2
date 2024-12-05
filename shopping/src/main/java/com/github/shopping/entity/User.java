@@ -44,5 +44,9 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserPrincipal> userPrincipals = new ArrayList<>();  // UserPrincipal과의 관계 설정
+    private List<UserPrincipal> userPrincipals = new ArrayList<>();
+
+    public User(Long userId) {
+        this.userId = userId;
+    }
 }

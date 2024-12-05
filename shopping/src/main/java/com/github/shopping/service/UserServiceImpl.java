@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         // 기본 역할 'USER' 부여
         UserPrincipal userPrincipal = new UserPrincipal();
         userPrincipal.setUser(user);
-        userPrincipal.setRole(new Roles(2L, "USER")); // 기본 역할 'USER' 설정 (role_id는 2)
+        userPrincipal.setRole(new Roles(1L, "USER")); // 기본 역할 'USER' 설정 (role_id는 1)
         userPrincipalRepository.save(userPrincipal);
     }
 
