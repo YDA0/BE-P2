@@ -38,6 +38,7 @@ public class SellController {
         Product product = new Product();
         product.setTitle(sellDto.getSellName());
         product.setPrice(sellDto.getSellPrice().intValue());
+        product.setContents(sellDto.getSellContents());
         product.setProductStock(sellDto.getSellStock());
         product.setProductImageUrl(sellDto.getSellImage());
         product.setUserId(user);
