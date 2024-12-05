@@ -43,6 +43,9 @@ public class User {
     @Size(max = 50, message = "이메일은 최대 50자까지 입력 가능합니다")
     private String email;
 
+    @Column(name = "user_img")
+    private String userImg;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserPrincipal> userPrincipals = new ArrayList<>();
 
