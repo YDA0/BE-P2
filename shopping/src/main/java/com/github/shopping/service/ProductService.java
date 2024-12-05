@@ -14,6 +14,9 @@ public interface ProductService {
 
     Optional<ProductDetailDto> getProductDetailById(Long id);
 
+    int adjustQuantity(Long productId, int changeAmount);
+
+    Product checkAndUpdateProductStock(Long productId, int quantity);
 }
 
 

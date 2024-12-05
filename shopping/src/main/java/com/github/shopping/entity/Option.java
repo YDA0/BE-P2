@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -25,4 +27,16 @@ public class Option {
     private String optionType;  // 옵션 종류 (색상, 사이즈 등)
     private String optionValue; // 옵션 값 (예: 빨강, L)
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Option option = (Option) o;
+        return Objects.equals(optionId, option.optionId) && Objects.equals(product, option.product) && Objects.equals(optionType, option.optionType) && Objects.equals(optionValue, option.optionValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(optionId, product, optionType, optionValue);
+    }
 }
