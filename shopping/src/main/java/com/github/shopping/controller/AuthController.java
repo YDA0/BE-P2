@@ -28,7 +28,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         try {
-            userService.register(user); // 회원가입 처리
+            userService.register(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
         } catch (InvalidValueException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
