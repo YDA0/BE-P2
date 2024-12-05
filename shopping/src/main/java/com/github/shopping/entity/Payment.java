@@ -43,5 +43,6 @@ public class Payment {
     private List<PaymentItem> paymentItems = new ArrayList<>(); // 구매한 물품
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) private User user;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
