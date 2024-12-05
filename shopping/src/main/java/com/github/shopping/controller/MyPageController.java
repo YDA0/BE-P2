@@ -2,6 +2,7 @@ package com.github.shopping.controller;
 
 import com.github.shopping.dto.CartItemDto;
 import com.github.shopping.dto.UserInfoDto;
+import com.github.shopping.entity.PaymentItem;
 import com.github.shopping.service.CartService;
 import com.github.shopping.service.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,13 @@ public class MyPageController {
     public ResponseEntity<List<CartItemDto>> getCartItems() {
         List<CartItemDto> cartItems = cartService.getCartItems(); // CartService에서 장바구니 아이템 가져오기
         return ResponseEntity.ok(cartItems);
+    }
+
+    // 구매 상품 목록 조회
+    @GetMapping("/purchased-items")
+    public ResponseEntity<List<PaymentItem>> getPurchasedItems(@RequestParam String email) {
+        List<PaymentItem> purchasedItems = myPageService.getPurchasedItems(email);
+        return ResponseEntity.ok(purchasedItems);
     }
     
 }
