@@ -70,6 +70,7 @@ public class SellServiceImpl implements SellService {
         sell.setSellStock(sellDto.getSellStock());
         sell.setSellImage(sellDto.getSellImage());
         sell.setSellContents(sellDto.getSellContents());
+        sell.setSellEndDate(sellDto.getSellEndDate());
         sellRepository.save(sell);
 
         return convertToResponseDto(sell);
@@ -94,7 +95,7 @@ public class SellServiceImpl implements SellService {
         dto.setSellImage(sell.getSellImage());
         dto.setSellContents(sell.getSellContents());
         dto.setSellCreateAt(sell.getSellCreateAt());
-        dto.setSellUpdateAt(sell.getSellUpdateAt() != null ? sell.getSellUpdateAt() : null);
+        dto.setSellUpdateAt(sell.getSellUpdateAt());
         dto.setSellEndDate(sell.getSellEndDate());
         return dto;
     }
