@@ -4,7 +4,7 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mariadb://database-p2.cx00oo0eeajx.ap-northeast-2.rds.amazonaws.com:3306/shopping?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mariadb://database-1.c5weow084e6r.ap-northeast-2.rds.amazonaws.com:3306/shopping?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
